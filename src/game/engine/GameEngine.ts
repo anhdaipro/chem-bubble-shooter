@@ -143,8 +143,8 @@ export class GameEngine {
 
     if (firedBubble) {
       // Wall bounce
-      if (firedBubble.x - BUBBLE_RADIUS < 0) { firedBubble.x = BUBBLE_RADIUS; firedBubble.vx = Math.abs(firedBubble.vx); }
-      if (firedBubble.x + BUBBLE_RADIUS > W)  { firedBubble.x = W - BUBBLE_RADIUS; firedBubble.vx = -Math.abs(firedBubble.vx); }
+      if (firedBubble.x < BUBBLE_RADIUS) { firedBubble.x = BUBBLE_RADIUS; firedBubble.vx = Math.abs(firedBubble.vx); }
+      if (firedBubble.x > W - BUBBLE_RADIUS) { firedBubble.x = W - BUBBLE_RADIUS; firedBubble.vx = -Math.abs(firedBubble.vx); }
       firedBubble.x += firedBubble.vx;
       firedBubble.y += firedBubble.vy;
 

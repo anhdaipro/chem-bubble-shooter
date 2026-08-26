@@ -1,6 +1,8 @@
 import { BUBBLE_RADIUS } from '../constants/GameConstants';
 import { CHEMICALS } from '../constants/ChemicalConstants';
+import { ORGANIC_CHEMICALS } from '../constants/OrganicChemicals';
 import { lighten } from '../constants/GameConstants';
+import { drawOrganicStructure } from '../renderer/OrganicRenderer';
 
 export class BubbleEntity {
   x: number;
@@ -19,20 +21,24 @@ export class BubbleEntity {
     this.isStatic = isStatic;
   }
 
+  get chemData() {
+    return ORGANIC_CHEMICALS[this.formula] || CHEMICALS[this.formula];
+  }
+
   get color(): string {
-    return CHEMICALS[this.formula]?.color || '#444';
+    return this.chemData?.color || '#444';
   }
 
   get glowColor(): string {
-    return CHEMICALS[this.formula]?.glowColor || '#666';
+    return this.chemData?.glowColor || '#666';
   }
 
   get symbol(): string {
-    return CHEMICALS[this.formula]?.symbol || this.formula;
+    return this.chemData?.symbol || this.formula;
   }
 
   get textColor(): string {
-    return CHEMICALS[this.formula]?.textColor || '#fff';
+    return this.chemData?.textColor || '#fff';
   }
 
   updateFalling(gravity: number, damping: number) {
@@ -76,17 +82,25 @@ export class BubbleEntity {
       ctx.fill();
     }
     
-    // Symbol
-    const sym = this.symbol;
-    let fs = 12; // Base font size
-    if (sym.length > 5) fs = 9;
-    else if (sym.length > 3) fs = 10;
+    // Try drawing structural formula first
+    const isStructure = drawOrganicStructure(ctx, this.formula, this.x, this.y, r, this.textColor);
     
-    ctx.font = `bold ${fs}px "Segoe UI", Arial`;
-    ctx.fillStyle = this.textColor;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(sym, this.x, this.y + 0.5);
+    // Fallback to normal text symbol if not a structure
+    if (!isStructure) {
+      const sym = this.symbol;
+      let fs = 12; // Base font size
+      if (sym.length > 5) fs = 9;
+      else if (sym.length > 3) fs = 10;
+      
+      ctx.font = `bold ${fs}px "Segoe UI", Arial`;
+      ctx.fillStyle = this.textColor;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      
+      // Auto-scale if text is too wide
+      const maxWidth = r * 1.8;
+      ctx.fillText(sym, this.x, this.y + 0.5, maxWidth);
+    }
     
     ctx.restore();
   }

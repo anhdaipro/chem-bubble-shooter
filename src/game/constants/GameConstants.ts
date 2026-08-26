@@ -1,9 +1,9 @@
-export const W = 500;
 export const H = 800;
 
 export const HEX_COLS = 8;
-export const BUBBLE_RADIUS = 27;
+export const BUBBLE_RADIUS = 28;
 export const DIA = BUBBLE_RADIUS * 2;
+export const W = (HEX_COLS * DIA) + 16;
 export const ROW_H = DIA * 0.866; // hex math (sqrt(3)/2 * d)
 export const MAX_GRID_ROWS = 25;
 
@@ -25,11 +25,11 @@ export const BULLET_SPEED = 24;
 export const FALLING_GRAVITY = 0.4;
 export const FALLING_DAMPING = 0.98;
 
-export const ARENA_ROW_DROP_INTERVAL = 15000;
+export const ARENA_ROW_DROP_INTERVAL = 10000;
 export const SCORE_BASE = 100;
 export const NEXT_LEVEL_DELAY = 3000;
 
-export const GUIDE_LENGTH = 1500;
+export const GUIDE_LENGTH = 400;
 export const GUIDE_BOUNCES = 5;
 
 // Color utils for canvas rendering
