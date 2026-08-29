@@ -7,9 +7,10 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
   color?: string;
+  hideFooter?: boolean;
 }
 
-export function Modal({ isOpen, onClose, title, children, color = '#3b82f6' }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, color = '#3b82f6', hideFooter = false }: ModalProps) {
   const { t } = useTranslation();
   if (!isOpen) return null;
 
@@ -33,14 +34,16 @@ export function Modal({ isOpen, onClose, title, children, color = '#3b82f6' }: M
           {children}
         </div>
 
-        <button onClick={onClose} style={{
-          width: '100%', padding: '12px 0', borderRadius: 12, marginTop: 8,
-          background: color + '22', border: `1.5px solid ${color}66`,
-          color: '#f0f9ff', fontSize: 15, fontWeight: 700, cursor: 'pointer', transition: 'all 0.18s'
-        }}
-          onMouseEnter={e => (e.currentTarget.style.background = color + '44')}
-          onMouseLeave={e => (e.currentTarget.style.background = color + '22')}
-        >{t('got_it')}</button>
+        {!hideFooter && (
+          <button onClick={onClose} style={{
+            width: '100%', padding: '12px 0', borderRadius: 12, marginTop: 8,
+            background: color + '22', border: `1.5px solid ${color}66`,
+            color: '#f0f9ff', fontSize: 15, fontWeight: 700, cursor: 'pointer', transition: 'all 0.18s'
+          }}
+            onMouseEnter={e => (e.currentTarget.style.background = color + '44')}
+            onMouseLeave={e => (e.currentTarget.style.background = color + '22')}
+          >{t('got_it')}</button>
+        )}
       </div>
     </div>
   );

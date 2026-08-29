@@ -11,16 +11,18 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
   const { t } = useTranslation();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={t('donate_title')}>
+    <Modal isOpen={isOpen} onClose={onClose} title={t('donate_title')} hideFooter>
       <div style={styles.container}>
         <p style={styles.desc}>{t('donate_desc')}</p>
 
         {/* Placeholder for QR Code */}
         <div style={styles.qrContainer}>
-          <div style={styles.qrPlaceholder}>
-            [ CHÈN ẢNH MÃ QR VÀO ĐÂY ]<br /><br />
-            Hoặc thông tin STK Ngân Hàng
-          </div>
+          <img
+            // Thay "123456789" bằng Số Tài Khoản VietinBank của bạn
+            src="https://img.vietqr.io/image/ICB-102883374249-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
+            alt="VietQR VietinBank"
+            style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 8 }}
+          />
         </div>
 
         <p style={styles.thankYou}>Cảm ơn bạn rất nhiều! ❤️</p>
