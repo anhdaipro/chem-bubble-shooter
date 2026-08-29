@@ -28,39 +28,44 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
       <div style={styles.bgGlow1} />
       <div style={styles.bgGlow2} />
 
-      {/* Top Controls */}
-      <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10, display: 'flex', gap: 10 }}>
-        {/* Sound Toggle */}
-        <button
-          onClick={() => {
-            const enabled = SoundManager.toggleSound();
-            setIsSoundEnabled(enabled);
-            if (enabled) SoundManager.play('click');
-          }}
-          style={{ background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: 36, height: 36, borderRadius: 18, cursor: 'pointer', fontWeight: 600, fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          title={isSoundEnabled ? 'Tắt âm thanh' : 'Bật âm thanh'}
-        >
-          {isSoundEnabled ? '🔊' : '🔇'}
-        </button>
+      {/* Header */}
+      <div style={styles.header}>
+        {/* Left side: Donate */}
+        <div>
+          {!isElectron() && (
+            <button
+              onClick={() => setIsDonateOpen(true)}
+              style={styles.donateBtn}
+            >
+              {t('donate')}
+            </button>
+          )}
+        </div>
 
-        {/* Language Toggle */}
-        <button
-          onClick={() => setLang(lang === 'en' ? 'vi' : 'en')}
-          style={{ background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0 12px', height: 36, borderRadius: 18, cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center' }}
-        >
-          {lang === 'en' ? '🇻🇳 VI' : '🇬🇧 EN'}
-        </button>
+        {/* Right side: Controls */}
+        <div style={{ display: 'flex', gap: 10 }}>
+          {/* Sound Toggle */}
+          <button
+            onClick={() => {
+              const enabled = SoundManager.toggleSound();
+              setIsSoundEnabled(enabled);
+              if (enabled) SoundManager.play('click');
+            }}
+            style={styles.iconBtn}
+            title={isSoundEnabled ? 'Tắt âm thanh' : 'Bật âm thanh'}
+          >
+            {isSoundEnabled ? '🔊' : '🔇'}
+          </button>
+
+          {/* Language Toggle */}
+          <button
+            onClick={() => setLang(lang === 'en' ? 'vi' : 'en')}
+            style={styles.langBtn}
+          >
+            {lang === 'en' ? '🇻🇳 VI' : '🇬🇧 EN'}
+          </button>
+        </div>
       </div>
-
-      {/* Donation / Buy me a coffee */}
-      {!isElectron() && (
-        <button
-          onClick={() => setIsDonateOpen(true)}
-          style={{ position: 'absolute', top: 20, left: 20, zIndex: 10, background: '#ffdd00', color: '#000000', border: 'none', padding: '6px 12px', borderRadius: 20, cursor: 'pointer', fontWeight: 700, fontSize: 14, display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 14px rgba(255,221,0,0.4)' }}
-        >
-          {t('donate')}
-        </button>
-      )}
 
       {/* Stars */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
@@ -181,6 +186,25 @@ const styles: Record<string, React.CSSProperties> = {
     position: 'fixed', inset: 0, zIndex: 0,
     background: 'linear-gradient(145deg, #020814 0%, #0a0f1e 35%, #050818 65%, #020617 100%)',
   },
+  header: {
+    width: '100%',
+    padding: '20px 20px 0',
+    display: 'flex',
+    maxWidth: 560,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    zIndex: 10,
+    position: 'relative',
+  },
+  donateBtn: {
+    background: '#ffdd00', color: '#000000', border: 'none', padding: '6px 12px', borderRadius: 20, cursor: 'pointer', fontWeight: 700, fontSize: 14, display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 14px rgba(255,221,0,0.4)'
+  },
+  iconBtn: {
+    background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: 36, height: 36, borderRadius: 18, cursor: 'pointer', fontWeight: 600, fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center'
+  },
+  langBtn: {
+    background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0 12px', height: 36, borderRadius: 18, cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center'
+  },
   bgGlow1: {
     position: 'fixed', top: '-20%', left: '-10%', zIndex: 0,
     width: '50vw', height: '50vw', borderRadius: '50%',
@@ -196,7 +220,8 @@ const styles: Record<string, React.CSSProperties> = {
   content: {
     position: 'relative', zIndex: 1,
     width: '100%', maxWidth: 560,
-    padding: '40px 20px 48px',
+    padding: '20px',
+    paddingTop: '10px',
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0,
   },
   logoSection: {
