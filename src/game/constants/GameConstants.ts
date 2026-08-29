@@ -1,4 +1,4 @@
-export const H = 800;
+export const H = 780;
 
 export const HEX_COLS = 8;
 export const BUBBLE_RADIUS = 28;
@@ -14,9 +14,10 @@ export const ADJACENT_THRESHOLD = 1.1;
 export const OCCUPANCY_THRESHOLD = 0.5;
 export const LANDING_SNAP_THRESHOLD = 15;
 
-export const CANNON_Y = H - 90;
+export const CANNON_Y = H - 70;
 export const CANNON_CENTER_X = W / 2;
 export const CANNON_BARREL_LENGTH = 55;
+export const DEATH_LINE_Y = CANNON_Y - BUBBLE_RADIUS * 4.5;
 
 export const AIM_ANGLE_LIMIT_MIN = -Math.PI;
 export const AIM_ANGLE_LIMIT_MAX = 0;

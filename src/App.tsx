@@ -17,7 +17,7 @@ export default function App() {
       <GameScreen
         mode={selectedMode}
         level={selectedLevel}
-        onExit={() => setScreen('menu')}
+        onExit={() => setScreen('levelselect')}
         onLevelSelect={() => setScreen('levelselect')}
       />
     );

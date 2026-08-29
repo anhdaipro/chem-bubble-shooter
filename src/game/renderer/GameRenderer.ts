@@ -1,7 +1,7 @@
 import { GameEngine } from '../engine/GameEngine';
 
 import {
-  W, H, CANNON_CENTER_X, CANNON_Y,
+  W, H, CANNON_CENTER_X, CANNON_Y, DEATH_LINE_Y,
   CANNON_BARREL_LENGTH, BUBBLE_RADIUS,
   AIM_ANGLE_LIMIT_MIN, AIM_ANGLE_LIMIT_MAX,
   GUIDE_LENGTH, GUIDE_BOUNCES,
@@ -32,13 +32,12 @@ export function drawBackground(ctx: CanvasRenderingContext2D) {
     ctx.fill();
   }
 
-  // Death line
-  const deathY = CANNON_Y - BUBBLE_RADIUS * 4.5;
+  // 3. Draw Death Line
   ctx.save();
+  ctx.strokeStyle = 'rgba(239,68,68,0.5)';
+  ctx.lineWidth = 2;
   ctx.setLineDash([8, 8]);
-  ctx.strokeStyle = 'rgba(239,68,68,0.32)';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(0, deathY); ctx.lineTo(W, deathY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, DEATH_LINE_Y); ctx.lineTo(W, DEATH_LINE_Y); ctx.stroke();
   ctx.setLineDash([]);
   ctx.restore();
 }
@@ -75,7 +74,7 @@ export function drawCannon(ctx: CanvasRenderingContext2D, angle: number, ammoFor
 
   // --- Static Base Ground/Shadow ---
   ctx.save();
-  ctx.translate(cx, cy + 20); 
+  ctx.translate(cx, cy + 20);
   ctx.beginPath();
   ctx.ellipse(0, 0, 70, 20, 0, 0, Math.PI * 2);
   const shadowGrad = ctx.createRadialGradient(0, 0, 10, 0, 0, 70);
@@ -115,12 +114,12 @@ export function drawCannon(ctx: CanvasRenderingContext2D, angle: number, ammoFor
   ctx.fillStyle = '#1e293b';
   ctx.strokeStyle = '#38bdf8';
   ctx.lineWidth = 2;
-  
+
   // Left arm
   ctx.beginPath();
   ctx.roundRect(-36, -50, 14, 45, [6, 6, 0, 0]);
   ctx.fill(); ctx.stroke();
-  
+
   // Right arm
   ctx.beginPath();
   ctx.roundRect(22, -50, 14, 45, [6, 6, 0, 0]);
@@ -134,31 +133,31 @@ export function drawCannon(ctx: CanvasRenderingContext2D, angle: number, ammoFor
     const shootDist = 38; // Bubble sits nicely inside cradle
     const ax = cx + Math.cos(angle) * shootDist;
     const ay = cy + Math.sin(angle) * shootDist;
-    const r = BUBBLE_RADIUS; 
-    
+    const r = BUBBLE_RADIUS;
+
     // Draw bubble
     const grd = ctx.createRadialGradient(ax - r * 0.25, ay - r * 0.25, r * 0.05, ax, ay, r);
-    grd.addColorStop(0, lighten(chem.color, 60)); 
+    grd.addColorStop(0, lighten(chem.color, 60));
     grd.addColorStop(1, chem.color + 'CC');
     ctx.beginPath(); ctx.arc(ax, ay, r, 0, Math.PI * 2);
     ctx.fillStyle = grd; ctx.fill();
     ctx.strokeStyle = chem.glowColor + 'AA'; ctx.lineWidth = 2; ctx.stroke();
-    
+
     // Try drawing structural formula first
     const isStructure = drawOrganicStructure(ctx, ammoFormula, ax, ay, r, chem.textColor);
-    
+
     // Fallback to normal text symbol if not a structure
     if (!isStructure) {
       const sym = chem.symbol;
       let fs = 12; // Base font size matching Bubble.ts
       if (sym.length > 5) fs = 9;
       else if (sym.length > 3) fs = 10;
-      
+
       ctx.font = `bold ${fs}px "Segoe UI", Arial`;
       ctx.fillStyle = chem.textColor;
-      ctx.textAlign = 'center'; 
+      ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      
+
       const maxWidth = r * 1.8;
       ctx.fillText(sym, ax, ay + 0.5, maxWidth);
     }

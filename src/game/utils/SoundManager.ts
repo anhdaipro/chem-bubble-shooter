@@ -1,15 +1,15 @@
 // Simple Web Audio manager that allows overlapping sounds
 
 const soundFiles = {
-  fire: '/sounds/fire.wav',
-  land: '/sounds/land.wav',
-  pop: '/sounds/pop_game.wav', // In app, they often use pop_game.wav or pop.mp3 for popping
-  combo: '/sounds/combo.wav',
-  gameover: '/sounds/gameover.wav',
-  win: '/sounds/win.mp3',
-  click: '/sounds/notification.wav',
-  flow: '/sounds/flow.mp3',
-  pour: '/sounds/pour.wav',
+  fire: './sounds/fire.wav',
+  land: './sounds/land.wav',
+  pop: './sounds/pop_game.wav',
+  combo: './sounds/combo.wav',
+  gameover: './sounds/gameover.wav',
+  win: './sounds/win.mp3',
+  click: './sounds/notification.wav',
+  flow: './sounds/flow.mp3',
+  pour: './sounds/pour.wav',
 };
 
 type SoundKey = keyof typeof soundFiles;

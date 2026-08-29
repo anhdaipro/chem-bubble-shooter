@@ -3,7 +3,7 @@ import {
   W, H, BUBBLE_RADIUS, HEX_COLS, DIA, ROW_H,
   MAX_GRID_ROWS, ARENA_MARGIN_TOP,
   COLLISION_THRESHOLD, ADJACENT_THRESHOLD, OCCUPANCY_THRESHOLD,
-  LANDING_SNAP_THRESHOLD, CANNON_Y, CANNON_CENTER_X,
+  LANDING_SNAP_THRESHOLD, CANNON_Y, CANNON_CENTER_X, DEATH_LINE_Y,
   CANNON_BARREL_LENGTH, BULLET_SPEED, ARENA_ROW_DROP_INTERVAL,
   SCORE_BASE, NEXT_LEVEL_DELAY, FALLING_DAMPING, FALLING_GRAVITY,
   mkParticles, type Particle, type FloatingText,
@@ -184,8 +184,11 @@ export class GameEngine {
     // Game over check (only when not firing)
     if (!this.isFiring && !this.isTransitioning) {
       const statics = this.bubbles.filter(b => b.isStatic);
-      const deathLine = CANNON_Y - BUBBLE_RADIUS * 4.5;
-      if (statics.some(b => b.y + BUBBLE_RADIUS > deathLine)) {
+      
+      const isOver = statics.some(b => {
+        return (b.y + BUBBLE_RADIUS) >= DEATH_LINE_Y;
+      });
+      if (isOver) {
         this.state.gameOver = true;
         this.emit({ type: 'GAME_OVER' });
         this.emit({ type: 'STATE_UPDATE', state: this.getState() });

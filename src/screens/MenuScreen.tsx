@@ -1,18 +1,26 @@
+import { useState } from 'react';
 import type { GameMode } from '../game/constants/LevelConstants';
 import { SoundManager } from '../game/utils/SoundManager';
+import { useTranslation } from '../i18n';
+import { isElectron } from '../game/utils/EnvironmentUtils';
+import { DonateModal } from '../components/DonateModal';
 
 interface MenuProps {
   onSelectMode: (mode: GameMode) => void;
 }
 
-const MODES: { id: GameMode; emoji: string; title: string; desc: string; color: string; glow: string }[] = [
-  { id: 'ion',      emoji: '⚗️',  title: 'Ion Reaction',  desc: 'Match cations & anions based on solubility table', color: '#e63946', glow: '#e6394633' },
-  { id: 'metal',    emoji: '⚔️',  title: 'Metal Arena',    desc: 'Metal displacement via activity series',           color: '#f59e0b', glow: '#f59e0b33' },
-  { id: 'organic',  emoji: '🌿',  title: 'Organic Chem',  desc: 'Organic reactions — addition, substitution',       color: '#10b981', glow: '#10b98133' },
-  { id: 'nonmetal', emoji: '💨',  title: 'NonMetal',       desc: 'Nonmetal reactions — halogens & oxidation',        color: '#8ac926', glow: '#8ac92633' },
-];
-
 export default function MenuScreen({ onSelectMode }: MenuProps) {
+  const { t, lang, setLang } = useTranslation();
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(SoundManager.isSoundEnabled());
+
+  const MODES: { id: GameMode; emoji: string; title: string; desc: string; color: string; glow: string }[] = [
+    { id: 'ion', emoji: '⚗️', title: t('ion_title'), desc: t('ion_desc'), color: '#e63946', glow: '#e6394633' },
+    { id: 'metal', emoji: '⚔️', title: t('metal_title'), desc: t('metal_desc'), color: '#f59e0b', glow: '#f59e0b33' },
+    { id: 'organic', emoji: '🌿', title: t('organic_title'), desc: t('organic_desc'), color: '#10b981', glow: '#10b98133' },
+    { id: 'nonmetal', emoji: '💨', title: t('nonmetal_title'), desc: t('nonmetal_desc'), color: '#8ac926', glow: '#8ac92633' },
+  ];
+
   return (
     <div style={styles.root}>
       {/* Animated background */}
@@ -20,14 +28,48 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
       <div style={styles.bgGlow1} />
       <div style={styles.bgGlow2} />
 
+      {/* Top Controls */}
+      <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10, display: 'flex', gap: 10 }}>
+        {/* Sound Toggle */}
+        <button
+          onClick={() => {
+            const enabled = SoundManager.toggleSound();
+            setIsSoundEnabled(enabled);
+            if (enabled) SoundManager.play('click');
+          }}
+          style={{ background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: 36, height: 36, borderRadius: 18, cursor: 'pointer', fontWeight: 600, fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          title={isSoundEnabled ? 'Tắt âm thanh' : 'Bật âm thanh'}
+        >
+          {isSoundEnabled ? '🔊' : '🔇'}
+        </button>
+
+        {/* Language Toggle */}
+        <button
+          onClick={() => setLang(lang === 'en' ? 'vi' : 'en')}
+          style={{ background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0 12px', height: 36, borderRadius: 18, cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center' }}
+        >
+          {lang === 'en' ? '🇻🇳 VI' : '🇬🇧 EN'}
+        </button>
+      </div>
+
+      {/* Donation / Buy me a coffee */}
+      {!isElectron() && (
+        <button
+          onClick={() => setIsDonateOpen(true)}
+          style={{ position: 'absolute', top: 20, left: 20, zIndex: 10, background: '#ffdd00', color: '#000000', border: 'none', padding: '6px 12px', borderRadius: 20, cursor: 'pointer', fontWeight: 700, fontSize: 14, display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 4px 14px rgba(255,221,0,0.4)' }}
+        >
+          {t('donate')}
+        </button>
+      )}
+
       {/* Stars */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
         {Array.from({ length: 80 }, (_, i) => (
           <div key={i} style={{
             position: 'absolute',
             left: `${(i * 137.508) % 100}%`,
-            top:  `${(i * 97.333) % 100}%`,
-            width:  i % 7 === 0 ? 2 : 1,
+            top: `${(i * 97.333) % 100}%`,
+            width: i % 7 === 0 ? 2 : 1,
             height: i % 7 === 0 ? 2 : 1,
             background: `rgba(255,255,255,${0.08 + (i % 6) * 0.03})`,
             borderRadius: '50%',
@@ -60,15 +102,15 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
               style={{ ...styles.card, borderColor: m.color + '40', boxShadow: `0 4px 32px ${m.glow}` }}
               onMouseEnter={e => {
                 e.currentTarget.style.borderColor = m.color + 'AA';
-                e.currentTarget.style.boxShadow   = `0 8px 40px ${m.color}44`;
-                e.currentTarget.style.transform   = 'translateY(-3px) scale(1.01)';
-                e.currentTarget.style.background  = `rgba(15,23,42,0.92)`;
+                e.currentTarget.style.boxShadow = `0 8px 40px ${m.color}44`;
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
+                e.currentTarget.style.background = `rgba(15,23,42,0.92)`;
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.borderColor = m.color + '40';
-                e.currentTarget.style.boxShadow   = `0 4px 32px ${m.glow}`;
-                e.currentTarget.style.transform   = 'translateY(0) scale(1)';
-                e.currentTarget.style.background  = `rgba(15,23,42,0.7)`;
+                e.currentTarget.style.boxShadow = `0 4px 32px ${m.glow}`;
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.background = `rgba(15,23,42,0.7)`;
               }}
             >
               {/* Accent bar */}
@@ -93,8 +135,30 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
           ))}
         </div>
 
-        <p style={styles.footer}>100% Offline · Chemistry Education Game</p>
+        {/* Download Links (Web only) */}
+        {!isElectron() && (
+          <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, width: '100%' }}>
+            <div style={{ color: '#94a3b8', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+              {lang === 'en' ? 'Download Desktop App' : 'Tải Ứng Dụng Desktop'}
+            </div>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                🪟 Windows
+              </a>
+              <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                🐧 Ubuntu
+              </a>
+              <a href="#" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                🍎 macOS
+              </a>
+            </div>
+          </div>
+        )}
+
+        <p style={styles.footer}>Chemistry Education Game</p>
       </div>
+
+      <DonateModal isOpen={isDonateOpen} onClose={() => setIsDonateOpen(false)} />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
@@ -180,6 +244,17 @@ const styles: Record<string, React.CSSProperties> = {
   },
   textBlock: { flex: 1 },
   cardTitle: { fontSize: 17, fontWeight: 700, marginBottom: 4 },
-  cardDesc:  { color: '#64748b', fontSize: 12.5, lineHeight: 1.5 },
+  cardDesc: { color: '#64748b', fontSize: 12.5, lineHeight: 1.5 },
   footer: { color: '#334155', fontSize: 12, marginTop: 32, textAlign: 'center' },
+  downloadBtn: {
+    background: 'rgba(30,41,59,0.7)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    color: '#f8fafc',
+    padding: '8px 16px',
+    borderRadius: 8,
+    textDecoration: 'none',
+    fontSize: 14,
+    fontWeight: 600,
+    transition: 'all 0.2s',
+  }
 };

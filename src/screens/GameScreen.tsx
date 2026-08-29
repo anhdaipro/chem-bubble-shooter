@@ -6,6 +6,7 @@ import { SoundManager } from '../game/utils/SoundManager';
 import { YouTubeIntegration } from '../game/utils/YouTubeIntegration';
 import { W, H, AIM_ANGLE_LIMIT_MIN } from '../game/constants/GameConstants';
 import type { GameMode } from '../game/constants/LevelConstants';
+import { useTranslation } from '../i18n';
 
 interface GameScreenProps {
   mode: GameMode;
@@ -19,11 +20,13 @@ type Overlay = 'none' | 'paused' | 'gameover' | 'levelwin';
 const MODE_COLORS: Record<GameMode, string> = {
   ion: '#e63946', metal: '#f59e0b', organic: '#10b981', nonmetal: '#8ac926',
 };
-const MODE_NAMES: Record<GameMode, string> = {
-  ion: '⚗️ Ion Reaction', metal: '⚔️ Metal Arena', organic: '🌿 Organic', nonmetal: '💨 NonMetal',
-};
 
-export default function GameScreen({ mode, level, onExit }: GameScreenProps) {
+export default function GameScreen({ mode, level, onExit, onLevelSelect }: GameScreenProps) {
+  const { t } = useTranslation();
+  
+  const MODE_NAMES: Record<GameMode, string> = {
+    ion: '⚗️ ' + t('ion_title'), metal: '⚔️ ' + t('metal_title'), organic: '🌿 ' + t('organic_title'), nonmetal: '💨 ' + t('nonmetal_title'),
+  };
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
   const angleRef  = useRef(AIM_ANGLE_LIMIT_MIN / 2);  // mutable, NO setState
@@ -45,6 +48,13 @@ export default function GameScreen({ mode, level, onExit }: GameScreenProps) {
       if (e.type === 'LEVEL_COMPLETE') {
         SoundManager.play('win');
         setFinalScore(engine.getState().score); setOverlay('levelwin');
+
+        // Unlock next level
+        const saved = localStorage.getItem(`unlocked_${mode}`);
+        const currentUnlocked = saved ? parseInt(saved, 10) : 1;
+        if (level + 1 > currentUnlocked) {
+          localStorage.setItem(`unlocked_${mode}`, String(level + 1));
+        }
       }
       if (e.type === 'FIRE')  SoundManager.play('fire', 0.6);
       if (e.type === 'LAND')  SoundManager.play('land', 0.5);
@@ -68,13 +78,17 @@ export default function GameScreen({ mode, level, onExit }: GameScreenProps) {
   // Pointer events — update angleRef only, NO setState
   const onMouseMove = useCallback((e: React.MouseEvent) => {
     if (overlay !== 'none') return;
-    angleRef.current = computeAngle(e.clientX, e.clientY);
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    angleRef.current = computeAngle(e.clientX - rect.left, e.clientY - rect.top);
   }, [overlay]);
 
   const onTouchMove = useCallback((e: React.TouchEvent) => {
     if (overlay !== 'none') return;
     e.preventDefault();
-    angleRef.current = computeAngle(e.touches[0].clientX, e.touches[0].clientY);
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    angleRef.current = computeAngle(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
   }, [overlay]);
 
   const onFire = useCallback(() => {
@@ -88,7 +102,7 @@ export default function GameScreen({ mode, level, onExit }: GameScreenProps) {
   const handleResume   = () => { engineRef.current?.setPaused(false); setOverlay('none');   };
 
   return (
-    <div style={{ width: W, height: H, position: 'relative', overflow: 'hidden', background: '#020814', userSelect: 'none' }}>
+    <div style={{ width: W, height: H, margin: '0 auto', position: 'relative', overflow: 'hidden', background: '#020814', userSelect: 'none' }}>
       <canvas
         ref={canvasRef} width={W} height={H}
         style={{ display: 'block', touchAction: 'none' }}
@@ -104,31 +118,31 @@ export default function GameScreen({ mode, level, onExit }: GameScreenProps) {
 
       {overlay === 'paused' && (
         <OverlayBox color={accentColor}>
-          <h2 style={ov.title}>⏸ Paused</h2>
-          <p style={ov.sub}>{MODE_NAMES[mode]} · Level {level}</p>
-          <OvBtn color={accentColor} onClick={handleResume}>▶ Resume</OvBtn>
-          <OvBtn color="#475569"     onClick={onExit}>← Exit</OvBtn>
+          <h2 style={ov.title}>{t('pause')}</h2>
+          <p style={ov.sub}>{MODE_NAMES[mode]} · {t('level')} {level}</p>
+          <OvBtn color={accentColor} onClick={handleResume}>{t('resume')}</OvBtn>
+          <OvBtn color="#475569"     onClick={onExit}>{t('exit')}</OvBtn>
         </OverlayBox>
       )}
 
       {overlay === 'gameover' && (
         <OverlayBox color="#ef4444">
           <div style={{ fontSize: 52, marginBottom: 6 }}>💥</div>
-          <h2 style={ov.title}>Game Over</h2>
+          <h2 style={ov.title}>{t('game_over')}</h2>
           <p style={ov.score}>{finalScore.toLocaleString()}</p>
-          <OvBtn color="#ef4444" onClick={handleRestart}>🔄 Retry</OvBtn>
-          <OvBtn color="#475569" onClick={onExit}>← Menu</OvBtn>
+          <OvBtn color="#ef4444" onClick={handleRestart}>{t('retry')}</OvBtn>
+          <OvBtn color="#475569" onClick={onLevelSelect}>{t('menu')}</OvBtn>
         </OverlayBox>
       )}
 
       {overlay === 'levelwin' && (
         <OverlayBox color={accentColor}>
           <div style={{ fontSize: 56, marginBottom: 6 }}>🏆</div>
-          <h2 style={ov.title}>Level Complete!</h2>
+          <h2 style={ov.title}>{t('level_complete')}</h2>
           <p style={ov.score}>{finalScore.toLocaleString()}</p>
-          <OvBtn color={accentColor} onClick={handleNextLevel}>▶ Next Level</OvBtn>
-          <OvBtn color="#334155"     onClick={handleRestart}>🔄 Retry</OvBtn>
-          <OvBtn color="#475569"     onClick={onExit}>← Menu</OvBtn>
+          <OvBtn color={accentColor} onClick={handleNextLevel}>{t('next_level')}</OvBtn>
+          <OvBtn color="#334155"     onClick={handleRestart}>{t('retry')}</OvBtn>
+          <OvBtn color="#475569"     onClick={onLevelSelect}>{t('menu')}</OvBtn>
         </OverlayBox>
       )}
     </div>

@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import type { GameMode } from '../game/constants/LevelConstants';
 import { getLevelsForMode } from '../game/constants/LevelConstants';
 import { SoundManager } from '../game/utils/SoundManager';
+import { useTranslation } from '../i18n';
+import { TutorialModal } from '../components/TutorialModal';
 
 interface LevelSelectProps {
   mode: GameMode;
@@ -8,14 +11,27 @@ interface LevelSelectProps {
   onBack: () => void;
 }
 
-const MODE_META: Record<GameMode, { emoji: string; name: string; color: string; desc: string }> = {
-  ion:      { emoji: '⚗️', name: 'Ion Reaction',  color: '#e63946', desc: 'Match cations & anions — solubility reactions' },
-  metal:    { emoji: '⚔️', name: 'Metal Arena',    color: '#f59e0b', desc: 'Metal displacement — activity series' },
-  organic:  { emoji: '🌿', name: 'Organic Chem',  color: '#10b981', desc: 'Organic reactions — addition, substitution' },
-  nonmetal: { emoji: '💨', name: 'NonMetal',       color: '#8ac926', desc: 'Nonmetal reactions — halogen, oxidation' },
-};
-
 export default function LevelSelectScreen({ mode, onSelect, onBack }: LevelSelectProps) {
+  const { t, lang } = useTranslation();
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [unlockedLevel, setUnlockedLevel] = useState(1);
+
+  useEffect(() => {
+    const saved = localStorage.getItem(`unlocked_${mode}`);
+    if (saved) {
+      setUnlockedLevel(parseInt(saved, 10));
+    } else {
+      setUnlockedLevel(1);
+    }
+  }, [mode]);
+
+  const MODE_META: Record<GameMode, { emoji: string; name: string; color: string; desc: string }> = {
+    ion: { emoji: '⚗️', name: t('ion_title'), color: '#e63946', desc: t('ion_desc') },
+    metal: { emoji: '⚔️', name: t('metal_title'), color: '#f59e0b', desc: t('metal_desc') },
+    organic: { emoji: '🌿', name: t('organic_title'), color: '#10b981', desc: t('organic_desc') },
+    nonmetal: { emoji: '💨', name: t('nonmetal_title'), color: '#8ac926', desc: t('nonmetal_desc') },
+  };
+
   const levels = getLevelsForMode(mode);
   const meta = MODE_META[mode];
 
@@ -42,53 +58,69 @@ export default function LevelSelectScreen({ mode, onSelect, onBack }: LevelSelec
 
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 540, margin: '0 auto' }}>
         <div style={styles.header}>
-          <button onClick={() => { SoundManager.play('click'); onBack(); }} style={styles.backBtn}>← Back</button>
+          <button onClick={() => { SoundManager.play('click'); onBack(); }} style={styles.backBtn}>{t('menu')}</button>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: 36 }}>{meta.emoji}</div>
             <h1 style={{ ...styles.title, color: meta.color }}>{meta.name}</h1>
             <p style={styles.desc}>{meta.desc}</p>
           </div>
-          <div style={{ width: 60 }} />
+          <button onClick={() => { SoundManager.play('click'); setIsTutorialOpen(true); }} style={{ ...styles.backBtn, padding: '8px 12px' }}>
+            ❓
+          </button>
         </div>
 
         <div style={styles.grid}>
           {levels.map((lvl) => {
             const isEndless = lvl.targetScore === Infinity;
+            const isLocked = lvl.id > unlockedLevel;
             return (
               <button
                 key={lvl.id}
                 onClick={() => {
+                  if (isLocked) return;
                   SoundManager.play('click');
                   onSelect(lvl.id);
                 }}
-                style={{ ...styles.levelCard, borderColor: meta.color + '44', boxShadow: `0 0 16px ${meta.color}22` }}
+                style={{ 
+                  ...styles.levelCard, 
+                  borderColor: meta.color + (isLocked ? '22' : '44'), 
+                  boxShadow: isLocked ? 'none' : `0 0 16px ${meta.color}22`,
+                  opacity: isLocked ? 0.6 : 1,
+                  cursor: isLocked ? 'not-allowed' : 'pointer'
+                }}
                 onMouseEnter={e => {
+                  if (isLocked) return;
                   e.currentTarget.style.borderColor = meta.color + 'AA';
                   e.currentTarget.style.boxShadow = `0 0 28px ${meta.color}44`;
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={e => {
+                  if (isLocked) return;
                   e.currentTarget.style.borderColor = meta.color + '44';
                   e.currentTarget.style.boxShadow = `0 0 16px ${meta.color}22`;
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
                 <div style={{ ...styles.levelNum, background: meta.color + '22', color: meta.color }}>
-                  {lvl.id}
+                  {isLocked ? '🔒' : lvl.id}
                 </div>
                 <div style={styles.levelInfo}>
-                  <div style={styles.levelTitle}>{lvl.title}</div>
+                  <div style={styles.levelTitle}>{lang === 'en' ? lvl.titleEn : lvl.title}</div>
                   <div style={styles.levelScore}>
-                    {isEndless ? '♾ Endless' : `🎯 ${(lvl.targetScore / 1000).toFixed(0)}K pts`}
+                    {isEndless ? `♾ ${t('endless') || 'Endless'}` : `🎯 ${(lvl.targetScore / 1000).toFixed(0)}K pts`}
                     {' · '}⚡ ×{lvl.speedMultiplier.toFixed(1)}
                   </div>
                 </div>
-                <div style={{ color: meta.color, fontSize: 18, opacity: 0.8 }}>▶</div>
+                <div style={{ color: meta.color, fontSize: 18, opacity: isLocked ? 0.3 : 0.8 }}>
+                  {isLocked ? '🔒' : '▶'}
+                </div>
               </button>
             );
           })}
         </div>
       </div>
+
+      <TutorialModal isOpen={isTutorialOpen} onClose={() => setIsTutorialOpen(false)} mode={mode} />
     </div>
   );
 }
