@@ -142,21 +142,41 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
 
         {/* Download Links (Web only) */}
         {!isElectron() && (
-          <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, width: '100%' }}>
-            <div style={{ color: '#94a3b8', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
-              {lang === 'en' ? 'Download Desktop App' : 'Tải Ứng Dụng Desktop'}
+          <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, width: '100%' }}>
+
+            {/* Desktop Apps */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+              <div style={{ color: '#94a3b8', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+                {lang === 'en' ? 'Download Desktop App' : 'Tải Ứng Dụng Desktop'}
+              </div>
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                  🪟 Windows
+                </a>
+                <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                  🐧 Ubuntu
+                </a>
+                <a href="#" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                  🍎 macOS
+                </a>
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
-                🪟 Windows
-              </a>
-              <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
-                🐧 Ubuntu
-              </a>
-              <a href="#" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
-                🍎 macOS
-              </a>
+
+            {/* Mobile Apps */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+              <div style={{ color: '#94a3b8', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+                {lang === 'en' ? 'Download Mobile App' : 'Tải Ứng Dụng Mobile'}
+              </div>
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <a href="https://play.google.com/store/apps/details?id=com.anhdaipro.chemcalcpro" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                  🤖 Android
+                </a>
+                <a href="https://apps.apple.com/app/id6773238485" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                  📱 iOS
+                </a>
+              </div>
             </div>
+
           </div>
         )}
 
