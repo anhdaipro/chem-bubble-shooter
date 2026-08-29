@@ -162,7 +162,7 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
               </div>
             </div>
 
-            {/* Mobile Apps */}
+            {/* Mobile Apps 123*/}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
               <div style={{ color: '#94a3b8', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
                 {lang === 'en' ? 'Download Mobile App' : 'Tải Ứng Dụng Mobile'}
