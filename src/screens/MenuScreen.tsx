@@ -156,7 +156,7 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
                 <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
                   🐧 Ubuntu
                 </a>
-                <a href="#" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0-arm64.dmg" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
                   🍎 macOS
                 </a>
               </div>

@@ -28,7 +28,7 @@
     "mac": {
       "target": [
         "dmg",
-        "mas"
+        "zip"
       ],
       "category": "public.app-category.educational-games"
     },

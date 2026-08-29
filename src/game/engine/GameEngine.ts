@@ -177,14 +177,15 @@ export class GameEngine {
     for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
       const ft = this.floatingTexts[i];
       if (ft.direction === 'down') ft.y += ft.vy; else ft.y -= ft.vy;
-      ft.opacity -= 0.016;
+      ft.vy *= 0.99; // Tăng hệ số này lên 0.98 để chữ bay xa gấp đôi (khoảng 100px)
+      ft.opacity -= 0.006;
       if (ft.opacity <= 0) this.floatingTexts.splice(i, 1);
     }
 
     // Game over check (only when not firing)
     if (!this.isFiring && !this.isTransitioning) {
       const statics = this.bubbles.filter(b => b.isStatic);
-      
+
       const isOver = statics.some(b => {
         return (b.y + BUBBLE_RADIUS) >= DEATH_LINE_Y;
       });

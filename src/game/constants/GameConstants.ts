@@ -1,6 +1,6 @@
 export const H = 780;
 
-export const HEX_COLS = 8;
+export const HEX_COLS = 9;
 export const BUBBLE_RADIUS = 28;
 export const DIA = BUBBLE_RADIUS * 2;
 export const W = (HEX_COLS * DIA) + 16;

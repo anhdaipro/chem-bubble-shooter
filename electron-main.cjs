@@ -6,8 +6,9 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 500, // Fixed size to match game width
-    height: 800,
+    width: 520, // Exact W = 520 (9 columns)
+    height: 780, // Exact H = 780
+    useContentSize: true, // Ensure the web viewport matches exactly, removing borders
     resizable: false, // Prevent resizing to avoid layout break
     webPreferences: {
       nodeIntegration: true,
