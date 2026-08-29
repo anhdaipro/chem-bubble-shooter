@@ -150,7 +150,7 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
                 {lang === 'en' ? 'Download Desktop App' : 'Tải Ứng Dụng Desktop'}
               </div>
               <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
+                <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter.Setup.1.0.0.exe" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
                   🪟 Windows
                 </a>
                 <a href="https://github.com/anhdaipro/chem-bubble-shooter/releases/download/untagged-b19631051abaed148b18/Chem.Bubble.Shooter-1.0.0.AppImage" target="_blank" rel="noreferrer" style={styles.downloadBtn}>
