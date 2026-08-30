@@ -41,7 +41,6 @@ const styles: Record<string, React.CSSProperties> = {
   },
   qrContainer: {
     width: '100%',
-    maxWidth: 240,
     aspectRatio: '1/1',
     background: '#1e293b',
     border: '2px dashed #475569',
