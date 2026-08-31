@@ -24,7 +24,7 @@ const translations = {
     iap_loading: 'Loading...',
     iap_buy: 'Buy me a Coffee',
     iap_thank_you: 'Thank you so much! ❤️',
-    
+
     // Game
     pause: '⏸ Paused',
     resume: '▶ Resume',
@@ -34,7 +34,7 @@ const translations = {
     menu: '← Menu',
     level_complete: 'Level Complete!',
     next_level: '▶ Next Level',
-    
+
     // Tutorial Modal
     tutorial_title: 'How to play',
     got_it: 'Got it',
@@ -51,7 +51,7 @@ const translations = {
     tut_tip2: 'Match correct chemicals to create reactions.',
     tut_tip3: 'Missing shots will drop the ceiling.',
     tut_warning: '* Missing too many times drops the board. Be careful!',
-    
+
     // Level Select
     level: 'Level',
     select_level: 'Select Level',
@@ -79,7 +79,7 @@ const translations = {
     iap_loading: 'Đang tải...',
     iap_buy: 'Ủng hộ tác giả',
     iap_thank_you: 'Cảm ơn bạn rất nhiều! ❤️',
-    
+
     // Game
     pause: '⏸ Đã Tạm Dừng',
     resume: '▶ Tiếp tục',
@@ -89,7 +89,7 @@ const translations = {
     menu: '← Menu',
     level_complete: 'Hoàn thành!',
     next_level: '▶ Bài tiếp theo',
-    
+
     // Tutorial Modal
     tutorial_title: 'Hướng dẫn chơi',
     got_it: 'Đã hiểu',
@@ -106,7 +106,7 @@ const translations = {
     tut_tip2: 'Ghép đúng chất để tạo phản ứng hóa học.',
     tut_tip3: 'Bắn trượt nhiều lần sẽ làm trần bóng rơi xuống.',
     tut_warning: '* Bắn trượt nhiều lần sẽ làm lưới bóng rơi xuống một bậc. Hãy cẩn thận!',
-    
+
     // Level Select
     level: 'Bài',
     select_level: 'Chọn Bài Chơi',
@@ -125,12 +125,12 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType>({
   lang: 'en',
-  setLang: () => {},
+  setLang: () => { },
   t: (key) => key,
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('vi');
+  const [lang, setLangState] = useState<Lang>('en');
 
   useEffect(() => {
     const saved = localStorage.getItem('chem_shooter_lang') as Lang;
