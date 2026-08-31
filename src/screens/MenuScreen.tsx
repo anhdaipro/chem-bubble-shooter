@@ -32,14 +32,12 @@ export default function MenuScreen({ onSelectMode }: MenuProps) {
       <div style={styles.header}>
         {/* Left side: Donate */}
         <div>
-          {!isElectron() && (
-            <button
-              onClick={() => setIsDonateOpen(true)}
-              style={styles.donateBtn}
-            >
-              {t('donate')}
-            </button>
-          )}
+          <button
+            onClick={() => setIsDonateOpen(true)}
+            style={styles.donateBtn}
+          >
+            {t('donate')}
+          </button>
         </div>
 
         {/* Right side: Controls */}
