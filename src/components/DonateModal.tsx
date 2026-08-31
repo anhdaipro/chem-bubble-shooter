@@ -79,7 +79,7 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
               <button style={styles.purchaseBtn} onClick={handlePurchase} disabled={isLoading}>
                 {isLoading
                   ? t('iap_loading')
-                  : (iapProduct ? `${t('iap_buy')} (${iapProduct.formattedPrice})` : `${t('iap_buy')} ($1.99)`)}
+                  : (iapProduct ? `${t('iap_buy')} (${iapProduct.formattedPrice})` : t('iap_buy'))}
               </button>
             </div>
           ) : (
