@@ -12,12 +12,12 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
   const [iapProduct, setIapProduct] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // Detect if the app is running inside a strict App Store environment (Mac App Store or Windows Store)
+  // Detect if the app is running inside Mac App Store
   const isStoreBuild = (() => {
     if (!/electron/i.test(navigator.userAgent)) return false;
     try {
       const process = (window as any).require('process');
-      return !!(process.mas || process.windowsStore);
+      return !!(process.mas);
     } catch (e) {
       return false;
     }
@@ -70,7 +70,7 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={t('donate_title')} hideFooter>
       <div style={styles.container}>
-        <p style={styles.desc}>{t('donate_desc')}</p>
+        <p style={styles.desc}>{isStoreBuild ? t('donate_desc_mas') : t('donate_desc')}</p>
 
         <div style={styles.qrContainer}>
           {isStoreBuild ? (
@@ -84,14 +84,14 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
             </div>
           ) : (
             <img
-              src="https://img.vietqr.io/image/ICB-102883374249-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
+              src="https://img.vietqr.io/image/BIDV-1471399083-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
               alt="VietQR VietinBank"
               style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 8 }}
             />
           )}
         </div>
 
-        <p style={styles.thankYou}>Cảm ơn bạn rất nhiều! ❤️</p>
+        <p style={styles.thankYou}>{t('iap_thank_you')}</p>
       </div>
     </Modal>
   );

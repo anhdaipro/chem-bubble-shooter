@@ -17,11 +17,13 @@ const translations = {
     donate: '💖 Support Project',
     donate_title: 'Buy me a coffee ☕',
     donate_desc: 'If you find this game helpful, consider buying the creator a drink via MoMo or VietQR to keep the project alive!',
+    donate_desc_mas: 'If you find this game helpful, consider buying the creator a drink to keep the project alive!',
     iap_success: 'Payment successful! Thank you so much! ❤️',
     iap_failed: 'Payment was cancelled or failed.',
     iap_secure: 'Pay securely via Apple App Store',
     iap_loading: 'Loading...',
     iap_buy: 'Buy me a Coffee',
+    iap_thank_you: 'Thank you so much! ❤️',
     
     // Game
     pause: '⏸ Paused',
@@ -70,11 +72,13 @@ const translations = {
     donate: '💖 Ủng hộ dự án',
     donate_title: 'Mời Tác Giả 1 Ly Nước 🥤',
     donate_desc: 'Nếu bạn thấy trò chơi này giúp ích cho việc học Hóa, hãy quét mã QR bên dưới để ủng hộ tác giả có động lực phát triển thêm nhé!',
+    donate_desc_mas: 'Nếu bạn thấy trò chơi này giúp ích cho việc học Hóa, hãy ủng hộ tác giả một ly nước để có động lực phát triển thêm nhé!',
     iap_success: 'Thanh toán thành công! Cảm ơn bạn rất nhiều! ❤️',
     iap_failed: 'Thanh toán bị huỷ hoặc có lỗi xảy ra.',
     iap_secure: 'Thanh toán an toàn qua Apple App Store',
     iap_loading: 'Đang tải...',
     iap_buy: 'Ủng hộ tác giả',
+    iap_thank_you: 'Cảm ơn bạn rất nhiều! ❤️',
     
     // Game
     pause: '⏸ Đã Tạm Dừng',
