@@ -8,7 +8,7 @@ interface DonateModalProps {
 }
 
 export function DonateModal({ isOpen, onClose }: DonateModalProps) {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [iapProduct, setIapProduct] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -82,6 +82,14 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
                   : (iapProduct ? `${t('iap_buy')} (${iapProduct.formattedPrice})` : t('iap_buy'))}
               </button>
             </div>
+          ) : lang === 'en' ? (
+            <a
+              href="https://ko-fi.com/daipham11322"
+              target="_blank"
+              style={{ background: '#29abe0', color: '#fff', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold' }}
+            >
+              ☕ Support me on Ko-fi
+            </a>
           ) : (
             <img
               src="https://img.vietqr.io/image/BIDV-1471399083-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
