@@ -12,7 +12,9 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "dev:electron": "concurrently \"vite\" \"electron .\"",
-    "build:electron": "npm run build && electron-builder"
+    "build:electron": "npm run build && electron-builder",
+    "build:mac": "npm run build && electron-builder --mac dmg zip",
+    "build:mas": "npm run build && electron-builder --mac mas"
   },
   "build": {
     "appId": "com.chembubbleshooter.app",
@@ -26,10 +28,23 @@
       "package.json"
     ],
     "mac": {
+      "icon": "build/icon.png",
       "target": [
         "dmg",
-        "zip"
+        "zip",
+        "mas"
       ],
+      "category": "public.app-category.educational-games",
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "mas": {
+      "icon": "build/icon.png",
+      "entitlements": "build/entitlements.mas.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "provisioningProfile": "build/embedded.provisionprofile",
       "category": "public.app-category.educational-games"
     },
     "win": {
