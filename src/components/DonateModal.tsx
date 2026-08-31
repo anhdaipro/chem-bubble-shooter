@@ -82,20 +82,21 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
                   : (iapProduct ? `${t('iap_buy')} (${iapProduct.formattedPrice})` : t('iap_buy'))}
               </button>
             </div>
-          ) : lang === 'en' ? (
-            <a
-              href="https://ko-fi.com/daipham11322"
-              target="_blank"
-              style={{ background: '#29abe0', color: '#fff', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold' }}
-            >
-              ☕ Support me on Ko-fi
-            </a>
           ) : (
-            <img
-              src="https://img.vietqr.io/image/BIDV-1471399083-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
-              alt="VietQR VietinBank"
-              style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 8 }}
-            />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: '100%' }}>
+              <img
+                src="https://img.vietqr.io/image/BIDV-1471399083-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
+                alt="VietQR BIDV"
+                style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: 8 }}
+              />
+              <a
+                href="https://ko-fi.com/daipham11322"
+                target="_blank"
+                style={{ background: '#29abe0', color: '#fff', padding: '12px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', width: '100%', boxSizing: 'border-box' }}
+              >
+                ☕ {lang === 'vi' ? 'Ủng hộ qua PayPal / Thẻ quốc tế' : 'Donate via PayPal / Card'}
+              </a>
+            </div>
           )}
         </div>
 
