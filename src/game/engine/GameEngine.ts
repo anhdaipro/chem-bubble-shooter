@@ -251,8 +251,11 @@ export class GameEngine {
 
       const product = getProductForMode(this.state.mode, firedBubble.formula, sb.formula);
       if (product) {
+        const textMargin = 40; // Safe margin to prevent text clipping
+        const clampX = Math.max(textMargin, Math.min(W - textMargin, bestSlot.x));
+
         this.floatingTexts.push({
-          id: Math.random().toString(), x: bestSlot.x, y: bestSlot.y,
+          id: Math.random().toString(), x: clampX, y: bestSlot.y,
           text: product.text, color: product.color, opacity: 1,
           vy: 1.5 + Math.random(), direction: product.text.includes('↓') ? 'down' : 'up',
         });

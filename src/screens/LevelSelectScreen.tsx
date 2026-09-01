@@ -81,9 +81,9 @@ export default function LevelSelectScreen({ mode, onSelect, onBack }: LevelSelec
                   SoundManager.play('click');
                   onSelect(lvl.id);
                 }}
-                style={{ 
-                  ...styles.levelCard, 
-                  borderColor: meta.color + (isLocked ? '22' : '44'), 
+                style={{
+                  ...styles.levelCard,
+                  borderColor: meta.color + (isLocked ? '22' : '44'),
                   boxShadow: isLocked ? 'none' : `0 0 16px ${meta.color}22`,
                   opacity: isLocked ? 0.6 : 1,
                   cursor: isLocked ? 'not-allowed' : 'pointer'

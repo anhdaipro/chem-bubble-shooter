@@ -15,12 +15,13 @@
     "build:electron": "npm run build && electron-builder",
     "build:mac": "npm run build && electron-builder --mac dmg zip",
     "build:mas": "npm run build && electron-builder --mac mas",
+    "build:mas-dev": "npm run build && electron-builder --mac mas-dev",
     "build:win-store": "npm run build && electron-builder --win appx"
   },
   "build": {
     "appId": "com.chembubbleshooter.app",
     "productName": "Chem Bubble Shooter",
-    "buildVersion": "5",
+    "buildVersion": "7",
     "directories": {
       "output": "release"
     },
@@ -46,7 +47,15 @@
       "icon": "build/icon.png",
       "entitlements": "build/entitlements.mas.plist",
       "entitlementsInherit": "build/entitlements.mas.inherit.plist",
-      "provisioningProfile": "build/embedded.provisionprofile",
+      "provisioningProfile": "build/Chem_Bubble_Shooter.provisionprofile",
+      "hardenedRuntime": false,
+      "category": "public.app-category.educational-games"
+    },
+    "masDev": {
+      "icon": "build/icon.png",
+      "entitlements": "build/entitlements.mas-dev.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "provisioningProfile": "build/Chem_Bubble_Dev.provisionprofile",
       "hardenedRuntime": false,
       "category": "public.app-category.educational-games"
     },

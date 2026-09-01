@@ -1,4 +1,4 @@
-import { BUBBLE_RADIUS } from '../constants/GameConstants';
+import { BUBBLE_RADIUS, BUBBLE_FONT_SIZE_LARGE, BUBBLE_FONT_SIZE_MEDIUM, BUBBLE_FONT_SIZE_SMALL } from '../constants/GameConstants';
 import { CHEMICALS } from '../constants/ChemicalConstants';
 import { ORGANIC_CHEMICALS } from '../constants/OrganicChemicals';
 import { lighten } from '../constants/GameConstants';
@@ -88,18 +88,22 @@ export class BubbleEntity {
     // Fallback to normal text symbol if not a structure
     if (!isStructure) {
       const sym = this.symbol;
-      let fs = 12; // Base font size
-      if (sym.length > 5) fs = 9;
-      else if (sym.length > 3) fs = 10;
-      
+      let fs = BUBBLE_FONT_SIZE_LARGE; 
       ctx.font = `bold ${fs}px "Segoe UI", Arial`;
+      
+      // Proportionally scale down if text is too wide
+      const maxWidth = r * 1.7;
+      const textWidth = ctx.measureText(sym).width;
+      if (textWidth > maxWidth) {
+        fs = fs * (maxWidth / textWidth);
+        ctx.font = `bold ${fs}px "Segoe UI", Arial`;
+      }
+
       ctx.fillStyle = this.textColor;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       
-      // Auto-scale if text is too wide
-      const maxWidth = r * 1.8;
-      ctx.fillText(sym, this.x, this.y + 0.5, maxWidth);
+      ctx.fillText(sym, this.x, this.y + 0.5);
     }
     
     ctx.restore();

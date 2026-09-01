@@ -2,6 +2,9 @@ export const H = 780;
 
 export const HEX_COLS = 9;
 export const BUBBLE_RADIUS = 28;
+export const BUBBLE_FONT_SIZE_LARGE = 16;
+export const BUBBLE_FONT_SIZE_MEDIUM = 14;
+export const BUBBLE_FONT_SIZE_SMALL = 12;
 export const DIA = BUBBLE_RADIUS * 2;
 export const W = (HEX_COLS * DIA) + 16;
 export const ROW_H = DIA * 0.866; // hex math (sqrt(3)/2 * d)
