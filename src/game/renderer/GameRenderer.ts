@@ -3,7 +3,7 @@ import { GameEngine } from '../engine/GameEngine';
 import {
   W, H, CANNON_CENTER_X, CANNON_Y, DEATH_LINE_Y,
   CANNON_BARREL_LENGTH, BUBBLE_RADIUS,
-  BUBBLE_FONT_SIZE_LARGE, BUBBLE_FONT_SIZE_MEDIUM, BUBBLE_FONT_SIZE_SMALL,
+  BUBBLE_FONT_SIZE_LARGE,
   AIM_ANGLE_LIMIT_MIN, AIM_ANGLE_LIMIT_MAX,
   GUIDE_LENGTH, GUIDE_BOUNCES,
   type Particle, type FloatingText,
@@ -150,9 +150,9 @@ export function drawCannon(ctx: CanvasRenderingContext2D, angle: number, ammoFor
     // Fallback to normal text symbol if not a structure
     if (!isStructure) {
       const sym = chem.symbol;
-      let fs = BUBBLE_FONT_SIZE_LARGE; 
+      let fs = BUBBLE_FONT_SIZE_LARGE;
       ctx.font = `bold ${fs}px "Segoe UI", Arial`;
-      
+
       // Proportionally scale down if text is too wide
       const maxWidth = r * 1.7;
       const textWidth = ctx.measureText(sym).width;
