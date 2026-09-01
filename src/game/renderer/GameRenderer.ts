@@ -242,28 +242,48 @@ export function drawHUD(
 
   // Next ammo panel (Right side)
   const panelX = W - 110;
-  const panelY = CANNON_Y - 28;
-  ctx.beginPath(); ctx.roundRect(panelX, panelY, 90, 56, 12);
+  const panelY = CANNON_Y - 38;
+  ctx.beginPath(); ctx.roundRect(panelX, panelY, 90, 68, 12);
   ctx.fillStyle = 'rgba(15,23,42,0.85)'; ctx.fill();
   ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth = 1.5; ctx.stroke();
 
   ctx.font = 'bold 10px "Segoe UI", Arial';
   ctx.fillStyle = '#64748b'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-  ctx.fillText('NEXT', panelX + 45, panelY + 6);
+  ctx.fillText('NEXT', panelX + 45, panelY + 4);
 
   nextQueue.slice(0, 2).forEach((formula, i) => {
-    const chem = CHEMICALS[formula]; if (!chem) return;
-    const nx = panelX + 30 + i * 36;
-    const ny = panelY + 32;
-    const r = 16 - i * 3;
+    const chem = ORGANIC_CHEMICALS[formula] || CHEMICALS[formula]; 
+    if (!chem) return;
+    
+    const nx = i === 0 ? panelX + 23 : panelX + 67;
+    const ny = panelY + 44;
+    const r = 21;
+    
     const grd = ctx.createRadialGradient(nx - r * 0.25, ny - r * 0.25, r * 0.05, nx, ny, r);
     grd.addColorStop(0, lighten(chem.color, 50)); grd.addColorStop(1, chem.color + 'BB');
     ctx.beginPath(); ctx.arc(nx, ny, r, 0, Math.PI * 2);
     ctx.fillStyle = grd; ctx.fill();
     ctx.strokeStyle = chem.glowColor + '88'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.font = `bold ${chem.symbol.length > 4 ? 8 : 10 - i}px "Segoe UI", Arial`;
-    ctx.fillStyle = chem.textColor; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(chem.symbol, nx, ny);
+    
+    const isStructure = drawOrganicStructure(ctx, formula, nx, ny, r, chem.textColor);
+    
+    if (!isStructure) {
+      const sym = chem.symbol;
+      let fs = 13;
+      ctx.font = `bold ${fs}px "Segoe UI", Arial`;
+
+      const maxWidth = r * 1.7;
+      const textWidth = ctx.measureText(sym).width;
+      if (textWidth > maxWidth) {
+        fs = fs * (maxWidth / textWidth);
+        ctx.font = `bold ${fs}px "Segoe UI", Arial`;
+      }
+
+      ctx.fillStyle = chem.textColor; 
+      ctx.textAlign = 'center'; 
+      ctx.textBaseline = 'middle';
+      ctx.fillText(sym, nx, ny + 0.5);
+    }
   });
 
   ctx.restore();
@@ -290,6 +310,13 @@ export function drawFloatingTexts(ctx: CanvasRenderingContext2D, texts: Floating
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
+    // Dynamically clamp x based on true text width
+    const textWidth = ctx.measureText(ft.text).width;
+    const padding = 10;
+    const minX = (textWidth / 2) + padding;
+    const maxX = W - (textWidth / 2) - padding;
+    const clampedX = Math.max(minX, Math.min(maxX, ft.x));
+
     // Detect if color is too dark for the background
     const isDark = ft.color === '#333333' || ft.color === '#444444' || ft.color === '#555555';
 
@@ -301,12 +328,12 @@ export function drawFloatingTexts(ctx: CanvasRenderingContext2D, texts: Floating
     ctx.lineJoin = 'round';
     ctx.lineWidth = 4;
     ctx.strokeStyle = isDark ? '#ffffff' : '#0f172a';
-    ctx.strokeText(ft.text, ft.x, ft.y);
+    ctx.strokeText(ft.text, clampedX, ft.y);
 
     // 3. Draw the exact original color on top
     ctx.shadowBlur = 0; // Turn off shadow so fill is crisp
     ctx.fillStyle = ft.color;
-    ctx.fillText(ft.text, ft.x, ft.y);
+    ctx.fillText(ft.text, clampedX, ft.y);
 
     ctx.restore();
   });

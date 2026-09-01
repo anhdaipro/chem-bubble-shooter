@@ -25,11 +25,11 @@ export const DEATH_LINE_Y = CANNON_Y - BUBBLE_RADIUS * 4.5;
 export const AIM_ANGLE_LIMIT_MIN = -Math.PI;
 export const AIM_ANGLE_LIMIT_MAX = 0;
 
-export const BULLET_SPEED = 24;
+export const BULLET_SPEED = 15;
 export const FALLING_GRAVITY = 0.4;
 export const FALLING_DAMPING = 0.98;
 
-export const ARENA_ROW_DROP_INTERVAL = 20000;
+export const ARENA_ROW_DROP_INTERVAL = 25000;
 export const SCORE_BASE = 100;
 export const NEXT_LEVEL_DELAY = 3000;
 
