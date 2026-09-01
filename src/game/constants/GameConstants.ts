@@ -29,7 +29,7 @@ export const BULLET_SPEED = 15;
 export const FALLING_GRAVITY = 0.4;
 export const FALLING_DAMPING = 0.98;
 
-export const ARENA_ROW_DROP_INTERVAL = 25000;
+export const ARENA_ROW_DROP_INTERVAL = 30000;
 export const SCORE_BASE = 100;
 export const NEXT_LEVEL_DELAY = 3000;
 
