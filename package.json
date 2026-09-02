@@ -65,10 +65,10 @@
       ]
     },
     "appx": {
-      "applicationId": "YourPublisherName.ChemBubbleShooter",
-      "identityName": "YourPublisherName.ChemBubbleShooter",
-      "publisher": "CN=YOUR_PUBLISHER_ID_HERE",
-      "publisherDisplayName": "Your Publisher Name"
+      "applicationId": "MeowTeam.ChemistryBubbleShooter",
+      "identityName": "MeowTeam.ChemistryBubbleShooter",
+      "publisher": "CN=7D7C45DE-7234-4366-8FBE-2BECBA3D41B2",
+      "publisherDisplayName": "MeowTeam"
     },
     "linux": {
       "target": [
