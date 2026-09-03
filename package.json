@@ -68,7 +68,9 @@
       "applicationId": "MeowTeam.ChemistryBubbleShooter",
       "identityName": "MeowTeam.ChemistryBubbleShooter",
       "publisher": "CN=7D7C45DE-7234-4366-8FBE-2BECBA3D41B2",
-      "publisherDisplayName": "MeowTeam"
+      "publisherDisplayName": "MeowTeam",
+      "backgroundColor": "#1E293B",
+      "languages": ["en-US", "vi-VN"]
     },
     "linux": {
       "target": [
