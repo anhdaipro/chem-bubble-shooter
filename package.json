@@ -1,7 +1,7 @@
 {
   "name": "chem-bubble-shooter",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Chemistry Bubble Shooter - A fun educational game",
   "author": "Pham Nguyen",
   "type": "module",
@@ -21,7 +21,7 @@
   "build": {
     "appId": "com.chembubbleshooter.app",
     "productName": "Chem Bubble Shooter",
-    "buildVersion": "7",
+    "buildVersion": "9",
     "directories": {
       "output": "release"
     },
@@ -70,7 +70,10 @@
       "publisher": "CN=7D7C45DE-7234-4366-8FBE-2BECBA3D41B2",
       "publisherDisplayName": "MeowTeam",
       "backgroundColor": "#1E293B",
-      "languages": ["en-US", "vi-VN"]
+      "languages": [
+        "en-US",
+        "vi-VN"
+      ]
     },
     "linux": {
       "target": [

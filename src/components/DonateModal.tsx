@@ -11,6 +11,9 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
   const { t, lang } = useTranslation();
   const [iapProduct, setIapProduct] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showCodeInput, setShowCodeInput] = React.useState(false);
+  const [inputCode, setInputCode] = React.useState('');
+  const [codeError, setCodeError] = React.useState('');
 
   // Detect if the app is running inside Mac App Store
   const isStoreBuild = (() => {
@@ -43,6 +46,7 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
       fetchProduct();
 
       const handleSuccess = (_event: any) => {
+        localStorage.setItem('iap_unlocked_all', 'true');
         alert(t('iap_success'));
         onClose();
       };
@@ -67,10 +71,37 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
     }
   };
 
+  const handleActivateCode = () => {
+    const validCodes = ['CHEMBUBBLESHOOTER2026', 'CHEMBUBBLESHOOTERPRO'];
+    const cleanCode = inputCode.trim().toUpperCase();
+    if (validCodes.includes(cleanCode)) {
+      localStorage.setItem('iap_unlocked_all', 'true');
+      alert(t('code_success'));
+      onClose();
+    } else {
+      setCodeError(t('code_invalid'));
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={t('donate_title')} hideFooter>
       <div style={styles.container}>
         <p style={styles.desc}>{isStoreBuild ? t('donate_desc_mas') : t('donate_desc')}</p>
+
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15))',
+          border: '1px solid rgba(16, 185, 129, 0.4)',
+          borderRadius: 12,
+          padding: '10px 14px',
+          fontSize: 13,
+          fontWeight: 600,
+          color: '#10b981',
+          textAlign: 'center',
+          width: '100%',
+          boxSizing: 'border-box'
+        }}>
+          {t('iap_unlock_note')}
+        </div>
 
         <div style={styles.qrContainer}>
           {isStoreBuild ? (
@@ -99,6 +130,82 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
             </div>
           )}
         </div>
+
+        {/* Contact info for Web / QR / PayPal donors */}
+        {!isStoreBuild && (
+          <div style={{
+            background: '#0f172a',
+            border: '1px solid #1e293b',
+            borderRadius: 10,
+            padding: '10px 12px',
+            fontSize: 12,
+            color: '#94a3b8',
+            textAlign: 'center',
+            width: '100%',
+            boxSizing: 'border-box'
+          }}>
+            <p style={{ margin: '0 0 4px 0', lineHeight: 1.4 }}>{t('donate_contact_note')}</p>
+            <p style={{ margin: 0, fontWeight: 700, color: '#38bdf8' }}>{t('support_contact')}</p>
+          </div>
+        )}
+
+        {/* Enter Activation Code Section (For QR / PayPal donors on web) */}
+        {!isStoreBuild && (
+          <div style={{ width: '100%', marginTop: 8 }}>
+            {!showCodeInput ? (
+              <button
+                onClick={() => setShowCodeInput(true)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#3b82f6',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  textDecoration: 'underline'
+                }}
+              >
+                {t('enter_code_btn')}
+              </button>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 8, width: '100%' }}>
+                  <input
+                    type="text"
+                    placeholder={t('code_placeholder')}
+                    value={inputCode}
+                    onChange={(e) => { setInputCode(e.target.value); setCodeError(''); }}
+                    style={{
+                      flex: 1,
+                      background: '#0f172a',
+                      border: '1px solid #334155',
+                      borderRadius: 8,
+                      padding: '10px 12px',
+                      color: '#f8fafc',
+                      fontSize: 14,
+                      outline: 'none'
+                    }}
+                  />
+                  <button
+                    onClick={handleActivateCode}
+                    style={{
+                      background: '#10b981',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 8,
+                      padding: '10px 16px',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {t('code_activate')}
+                  </button>
+                </div>
+                {codeError && <p style={{ color: '#ef4444', fontSize: 12, margin: 0 }}>{codeError}</p>}
+              </div>
+            )}
+          </div>
+        )}
 
         <p style={styles.thankYou}>{t('iap_thank_you')}</p>
       </div>

@@ -15,8 +15,12 @@ export default function LevelSelectScreen({ mode, onSelect, onBack }: LevelSelec
   const { t, lang } = useTranslation();
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [unlockedLevel, setUnlockedLevel] = useState(1);
+  const [hasUnlockedAll, setHasUnlockedAll] = useState(false);
 
   useEffect(() => {
+    // 1. Kiểm tra trạng thái mua IAP mở khóa tất cả màn
+    const isPurchased = localStorage.getItem('iap_unlocked_all') === 'true';
+    setHasUnlockedAll(isPurchased);
     const saved = localStorage.getItem(`unlocked_${mode}`);
     if (saved) {
       setUnlockedLevel(parseInt(saved, 10));
@@ -72,7 +76,7 @@ export default function LevelSelectScreen({ mode, onSelect, onBack }: LevelSelec
         <div style={styles.grid}>
           {levels.map((lvl) => {
             const isEndless = lvl.targetScore === Infinity;
-            const isLocked = lvl.id > unlockedLevel;
+            const isLocked = !hasUnlockedAll && lvl.id > unlockedLevel;
             return (
               <button
                 key={lvl.id}

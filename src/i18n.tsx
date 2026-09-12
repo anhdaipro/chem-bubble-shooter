@@ -23,6 +23,14 @@ const translations = {
     iap_secure: 'Pay securely via official App Store',
     iap_loading: 'Loading...',
     iap_buy: 'Buy me a Coffee',
+    iap_unlock_note: '✨ Special Perk: Unlocks all levels across all game modes!',
+    enter_code_btn: '🔑 Enter Activation Code',
+    code_placeholder: 'Enter unlock code...',
+    code_success: '🎉 All levels unlocked successfully!',
+    code_invalid: 'Invalid unlock code. Please check again!',
+    code_activate: 'Activate',
+    donate_contact_note: '💬 After donating via QR/PayPal, please include your email or contact support to receive your activation code:',
+    support_contact: '✉️ Support Email: vanheonguyen123456@gmail.com',
     iap_thank_you: 'Thank you so much! ❤️',
 
     // Game
@@ -78,6 +86,14 @@ const translations = {
     iap_secure: 'Thanh toán an toàn qua Cửa hàng Ứng dụng chính thức',
     iap_loading: 'Đang tải...',
     iap_buy: 'Ủng hộ tác giả',
+    iap_unlock_note: '✨ Đặc quyền: Mở khoá toàn bộ màn chơi cho tất cả các chế độ!',
+    enter_code_btn: '🔑 Nhập mã kích hoạt',
+    code_placeholder: 'Nhập mã mở khoá...',
+    code_success: '🎉 Đã mở khoá toàn bộ màn chơi thành công!',
+    code_invalid: 'Mã kích hoạt không đúng. Vui lòng kiểm tra lại!',
+    code_activate: 'Kích hoạt',
+    donate_contact_note: '💬 Sau khi chuyển khoản/PayPal, vui lòng liên hệ tác giả để nhận mã mở khoá:',
+    support_contact: '✉️ Email hỗ trợ: vanheonguyen123456@gmail.com',
     iap_thank_you: 'Cảm ơn bạn rất nhiều! ❤️',
 
     // Game
