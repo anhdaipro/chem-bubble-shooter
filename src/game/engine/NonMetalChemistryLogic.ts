@@ -195,7 +195,7 @@ export const getReactionProduct = (idA: string, idB: string): { text: string, co
 
     if (other.type === 'compound') {
       if (nonmetal.rawSymbol === 'Cl2' && other.rawSymbol === 'H2O') return { text: 'HCl + HClO', color: '#48CAE4' };
-      if (nonmetal.rawSymbol === 'Cl2' && other.rawSymbol === 'NaOH') return { text: 'Nước Javen', color: '#E9ECEF' };
+      if (nonmetal.rawSymbol === 'Cl2' && other.rawSymbol === 'NaOH') return { text: 'NaCl + NaClO', color: '#E9ECEF' };
       if (nonmetal.rawSymbol === 'Br2' && other.rawSymbol === 'NaOH') return { text: 'NaBr + NaBrO', color: '#E9ECEF' };
       if (nonmetal.rawSymbol === 'Br2' && other.rawSymbol === 'H2O') return { text: 'HBr + HBrO', color: '#FFFFFF' };
       if (nonmetal.rawSymbol === 'I2' && other.rawSymbol === 'NaOH') return { text: 'NaI + NaIO', color: '#E9ECEF' };

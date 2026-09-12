@@ -11,9 +11,9 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
   const { t, lang } = useTranslation();
   const [iapProduct, setIapProduct] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [showCodeInput, setShowCodeInput] = React.useState(false);
-  const [inputCode, setInputCode] = React.useState('');
-  const [codeError, setCodeError] = React.useState('');
+  // const [showCodeInput, setShowCodeInput] = React.useState(false);
+  // const [inputCode, setInputCode] = React.useState('');
+  // const [codeError, setCodeError] = React.useState('');
 
   // Detect if the app is running inside Mac App Store
   const isStoreBuild = (() => {
@@ -71,17 +71,17 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
     }
   };
 
-  const handleActivateCode = () => {
-    const validCodes = ['CHEMBUBBLESHOOTER2026', 'CHEMBUBBLESHOOTERPRO'];
-    const cleanCode = inputCode.trim().toUpperCase();
-    if (validCodes.includes(cleanCode)) {
-      localStorage.setItem('iap_unlocked_all', 'true');
-      alert(t('code_success'));
-      onClose();
-    } else {
-      setCodeError(t('code_invalid'));
-    }
-  };
+  // const handleActivateCode = () => {
+  //   const validCodes = ['CHEMBUBBLESHOOTER2026', 'CHEMBUBBLESHOOTERPRO'];
+  //   const cleanCode = inputCode.trim().toUpperCase();
+  //   if (validCodes.includes(cleanCode)) {
+  //     localStorage.setItem('iap_unlocked_all', 'true');
+  //     alert(t('code_success'));
+  //     onClose();
+  //   } else {
+  //     setCodeError(t('code_invalid'));
+  //   }
+  // };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={t('donate_title')} hideFooter>
