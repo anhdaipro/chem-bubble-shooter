@@ -132,7 +132,7 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
         </div>
 
         {/* Contact info for Web / QR / PayPal donors */}
-        {!isStoreBuild && (
+        {/* {!isStoreBuild && (
           <div style={{
             background: '#0f172a',
             border: '1px solid #1e293b',
@@ -147,10 +147,10 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
             <p style={{ margin: '0 0 4px 0', lineHeight: 1.4 }}>{t('donate_contact_note')}</p>
             <p style={{ margin: 0, fontWeight: 700, color: '#38bdf8' }}>{t('support_contact')}</p>
           </div>
-        )}
+        )} */}
 
         {/* Enter Activation Code Section (For QR / PayPal donors on web) */}
-        {!isStoreBuild && (
+        {/* {!isStoreBuild && (
           <div style={{ width: '100%', marginTop: 8 }}>
             {!showCodeInput ? (
               <button
@@ -205,7 +205,7 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
               </div>
             )}
           </div>
-        )}
+        )} */}
 
         <p style={styles.thankYou}>{t('iap_thank_you')}</p>
       </div>
