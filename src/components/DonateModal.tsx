@@ -121,7 +121,7 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
                 style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: 8 }}
               />
               <a
-                href="https://ko-fi.com/daipham11322"
+                href="https://ko-fi.com/meoteam"
                 target="_blank"
                 style={{ background: '#29abe0', color: '#fff', padding: '12px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', width: '100%', boxSizing: 'border-box' }}
               >
