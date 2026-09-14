@@ -116,8 +116,8 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: '100%' }}>
               <img
-                src="https://img.vietqr.io/image/BIDV-1471399083-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
-                alt="VietQR BIDV"
+                src="https://img.vietqr.io/image/TCB-9347285910-compact.jpg?amount=20000&addInfo=Ung%20ho%20tac%20gia"
+                alt="VietQR TCB"
                 style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: 8 }}
               />
               <a
