@@ -93,6 +93,35 @@ export const getReactionProduct = (idA: string, idB: string): { text: string, co
   const ionA = CHEMICALS[idA];
   const ionB = CHEMICALS[idB];
   if (!ionA || !ionB) return null;
+
+  // --- Phản ứng đặc biệt của HSO4- ---
+  const isHSO4Reaction = (idA === 'HSO4-' || idB === 'HSO4-');
+  if (isHSO4Reaction) {
+    const otherId = idA === 'HSO4-' ? idB : idA;
+    // Kết tủa
+    if (otherId === 'Ba2+') return { text: 'BaSO₄ ↓ + H⁺', color: '#FFFFFF' };
+    if (otherId === 'Pb2+') return { text: 'PbSO₄ ↓ + H⁺', color: '#FFFFFF' };
+    if (otherId === 'Ca2+') return { text: 'CaSO₄ ↓ + H⁺', color: '#FFFFFF' };
+    if (otherId === 'Ag+') return { text: 'Ag₂SO₄ ↓ + H⁺', color: '#FFFFFF' };
+
+    // Phản ứng Axit - Bazơ
+    if (otherId === 'OH-') return { text: 'SO₄²⁻ + H₂O', color: '#48CAE4' };
+    if (otherId === 'CO32-' || otherId === 'HCO3-') return { text: 'SO₄²⁻ + CO₂ ↑ + H₂O', color: '#FFFFFF' };
+    if (otherId === 'SO32-') return { text: 'SO₄²⁻ + SO₂ ↑ + H₂O', color: '#FFFFFF' };
+    if (otherId === 'S2-') return { text: 'SO₄²⁻ + H₂S ↑', color: '#FFFFFF' };
+    if (otherId === 'CH3COO-') return { text: 'SO₄²⁻ + CH₃COOH', color: '#FFFFFF' };
+    if (otherId === 'SiO32-') return { text: 'SO₄²⁻ + H₂SiO₃ ↓', color: '#FFFFFF' };
+    if (otherId === 'PO43-') return { text: 'SO₄²⁻ + H₂PO₄⁻', color: '#FFFFFF' };
+  }
+
+  // --- Các phản ứng đặc biệt của Anion - Anion khác ---
+  if ((idA === 'H2PO4-' && idB === 'OH-') || (idB === 'H2PO4-' && idA === 'OH-')) {
+    return { text: 'PO₄³⁻ + 2H₂O', color: '#48CAE4' };
+  }
+  if ((idA === 'HCO3-' && idB === 'OH-') || (idB === 'HCO3-' && idA === 'OH-')) {
+    return { text: 'CO₃²⁻ + H₂O', color: '#48CAE4' };
+  }
+
   if (ionA.type === ionB.type) return null;
 
   if (ionA.type === 'metal' || ionB.type === 'metal') {
@@ -110,7 +139,7 @@ export const getReactionProduct = (idA: string, idB: string): { text: string, co
   const anion = ionA.type === 'anion' ? ionA : ionB;
 
   if (cation.rawSymbol === 'H' && anion.rawSymbol === 'OH') return { text: 'H₂O', color: '#48CAE4' };
-  if (cation.rawSymbol === 'H' && anion.rawSymbol === 'CO3') return { text: 'CO₂ ↑', color: '#FFFFFF' };
+  if (cation.rawSymbol === 'H' && (anion.rawSymbol === 'CO3' || anion.rawSymbol === 'HCO3')) return { text: 'CO₂ ↑', color: '#FFFFFF' };
   if (cation.rawSymbol === 'H' && anion.rawSymbol === 'SO3') return { text: 'SO₂ ↑', color: '#FFFFFF' };
   if (cation.rawSymbol === 'H' && anion.rawSymbol === 'S') return { text: 'H₂S ↑', color: '#FFFFFF' };
   if (cation.rawSymbol === 'NH4' && anion.rawSymbol === 'OH') return { text: 'NH₃ ↑', color: '#FFFFFF' };
@@ -123,9 +152,9 @@ export const getReactionProduct = (idA: string, idB: string): { text: string, co
 
   // --- Các phản ứng Thủy phân kép ---
   const isTrivalent = ['Al3+', 'Fe3+', 'Cr3+'].includes(cation.id);
-  if (isTrivalent && ['CO32-', 'SO32-', 'S2-'].includes(anion.id)) {
+  if (isTrivalent && ['CO32-', 'SO32-', 'S2-', 'HCO3-'].includes(anion.id)) {
     let gas = '';
-    if (anion.id === 'CO32-') gas = 'CO₂ ↑';
+    if (anion.id === 'CO32-' || anion.id === 'HCO3-') gas = 'CO₂ ↑';
     else if (anion.id === 'SO32-') gas = 'SO₂ ↑';
     else if (anion.id === 'S2-') gas = 'H₂S ↑';
 
@@ -197,7 +226,7 @@ export function checkReactionForMode(mode: string, idA: string, idB: string): bo
   return checkReaction(idA, idB);
 }
 
-export function getProductForMode(mode: string, idA: string, idB: string): {text: string, color: string} | null {
+export function getProductForMode(mode: string, idA: string, idB: string): { text: string, color: string } | null {
   if (mode === 'nonmetal') return getNonMetalReactionProduct(idA, idB);
   if (mode === 'organic') {
     const res = evaluateOrganicReaction(idA, idB);

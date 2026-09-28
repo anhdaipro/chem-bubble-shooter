@@ -6,6 +6,31 @@ export interface OrganicReactionResult {
   product?: string;
 }
 
+const toSubscript = (value: number) => String(value).replace(/[0-9]/g, (digit) =>
+  ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'][Number(digit)]
+);
+
+const formatFormula = (formula: string) => formula.replace(/[0-9]/g, (digit) =>
+  ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'][Number(digit)]
+);
+
+const getHaloalkaneCarbonFormula = (formula: string) => {
+  const match = formula.match(/^C(\d+)H(\d+)Cl$/);
+  if (!match) return null;
+
+  return {
+    carbonCount: Number(match[1]),
+    hydrogenCount: Number(match[2]),
+  };
+};
+
+const getWurtzProduct = (formula: string) => {
+  const composition = getHaloalkaneCarbonFormula(formula);
+  if (!composition) return null;
+
+  return `C${toSubscript(composition.carbonCount * 2)}H${toSubscript(composition.hydrogenCount * 2)} + NaCl`;
+};
+
 export function evaluateOrganicReaction(targetId: string, reagentId: string): OrganicReactionResult {
   let target = ORGANIC_CHEMICALS[targetId];
   let reagent = ORGANIC_CHEMICALS[reagentId];
@@ -50,9 +75,6 @@ export function evaluateOrganicReaction(targetId: string, reagentId: string): Or
       if (target.id === 'C2H4') productFormula = 'C₂H₄Cl₂';
       else if (target.id === 'C3H6') productFormula = 'C₃H₆Cl₂';
       else productFormula = 'CₙH₂ₙCl₂';
-    } else if (reagent.id === 'CuO_t') {
-      isMatch = true; score = 250;
-      productFormula = 'CO₂↑ + Cu↓';
     }
   }
   // Substitution Reactions (Alkanes with Cl2/askt)
@@ -61,12 +83,27 @@ export function evaluateOrganicReaction(targetId: string, reagentId: string): Or
       isMatch = true; score = 300;
       if (target.id === 'CH4') productFormula = 'CH₃Cl';
       else if (target.id === 'C2H6') productFormula = 'C₂H₅Cl';
-      else if (target.id === 'C2H5Cl') productFormula = 'C₂H₄Cl₂';
       else productFormula = 'CₙH₂ₙ₊₁Cl';
-    } else if (target.id === 'C2H5Cl' && reagent.id === 'NaOH_t') {
-      isMatch = true; score = 350; productFormula = 'C₂H₅OH';
     } else if (reagent.id === 'CuO_t') {
-      isMatch = true; score = 300; productFormula = 'CO₂↑ + Cu↓';
+      if (target.id === 'CH4') {
+        isMatch = true; score = 300;
+        productFormula = 'CO₂↑ + 4Cu↓ + 2H₂O';
+      }
+    }
+  }
+  // Nucleophilic substitution of haloalkanes
+  else if (target.type === 'halide') {
+    const haloalkaneFormula = getHaloalkaneCarbonFormula(target.id);
+
+    if (haloalkaneFormula && reagent.id === 'NaOH_t') {
+      isMatch = true; score = 350;
+      productFormula = `C${toSubscript(haloalkaneFormula.carbonCount)}H${toSubscript(haloalkaneFormula.hydrogenCount)}OH`;
+    } else if (reagent.id === 'Na') {
+      const wurtzProduct = getWurtzProduct(target.id);
+      if (wurtzProduct) {
+        isMatch = true; score = 400;
+        productFormula = wurtzProduct;
+      }
     }
   }
   // Oxidation (Alcohols with CuO/t°)
@@ -103,21 +140,24 @@ export function evaluateOrganicReaction(targetId: string, reagentId: string): Or
       if (target.id === 'C2H2') productFormula = 'C₂H₂Br₄';
       else if (target.id === 'C3H4') productFormula = 'C₃H₄Br₄';
       else productFormula = 'CₙH₂ₙ₋₂Br₄';
-    } else if (reagent.id === 'CuO_t') {
-      isMatch = true; score = 250;
-      productFormula = 'CO₂↑ + Cu↓';
     }
   }
   // Neutralization
   else if (target.type === 'carboxylic') {
+    const carboxylateFormula = target.id.endsWith('COOH')
+      ? formatFormula(target.id.replace(/COOH$/, 'COONa'))
+      : null;
+
     if (reagent.id === 'Na') {
-      isMatch = true; score = 300;
-      if (target.id === 'CH3COOH') productFormula = 'CH₃COONa + 1/2 H₂↑';
-      else productFormula = 'RCOONa + 1/2 H₂↑';
-    } else if (reagent.id === 'NaOH') {
-      isMatch = true; score = 300;
-      if (target.id === 'CH3COOH') productFormula = 'CH₃COONa';
-      else productFormula = 'RCOONa';
+      if (carboxylateFormula) {
+        isMatch = true; score = 300;
+        productFormula = `${carboxylateFormula} + 1/2 H₂↑`;
+      }
+    } else if (reagent.id === 'NaOH' || reagent.id === 'NaOH_t') {
+      if (carboxylateFormula) {
+        isMatch = true; score = 300;
+        productFormula = carboxylateFormula;
+      }
     } else if (reagent.id === 'AgNO3_NH3') {
       if (target.id === 'HCOOH') {
         isMatch = true; score = 450; productFormula = '2Ag↓';

@@ -37,7 +37,7 @@ export const PRECIPITATE_PROPERTIES: Record<string, { color: string }> = {
 };
 
 export const CATIONS = [
-  'H+', 'Li+', 'Na+', 'K+', 'NH4+', 'Mg2+', 'Ca2+', 'Ba2+', 'Al3+', 'Zn2+', 'Fe2+', 'Fe3+', 'Cu2+', 'Ag+', 'Pb2+', 'Ni2+', 'Cr3+', 'Mn2+'
+  'H+', 'Li+', 'Na+', 'K+', 'NH4+', 'Mg2+', 'Ca2+', 'Ba2+', 'Al3+', 'Zn2+', 'Fe2+', 'Fe3+', 'Cu2+', 'Ag+', 'Pb2+', 'Ni2+', 'Cr3+', 'Mn2+', 'Sn2+'
 ];
 
 export const ANIONS = [
@@ -332,5 +332,21 @@ export const SOLUBILITY_TABLE: Record<string, Record<string, SolubilityInfo>> = 
     'CH3COO-': { status: 'T' },
     'F-': { status: 'K', color: '#FFC0CB', note: 'solubility_notes.pink' },
     'CrO42-': { status: 'K', color: '#8B4513', note: 'solubility_notes.brown' },
+  },
+  'Sn2+': {
+    'OH-': { status: 'K', color: '#FFFFFF' },
+    'NO3-': { status: 'T' },
+    'Cl-': { status: 'T' },
+    'Br-': { status: 'T' },
+    'I-': { status: 'T' },
+    'S2-': { status: 'K', color: '#8B4513', note: 'solubility_notes.brown' },
+    'SO32-': { status: 'K', color: '#FFFFFF' },
+    'SO42-': { status: 'T' },
+    'CO32-': { status: 'K', color: '#FFFFFF' },
+    'PO43-': { status: 'K', color: '#FFFFFF' },
+    'SiO32-': { status: 'K', color: '#FFFFFF' },
+    'CH3COO-': { status: 'T' },
+    'F-': { status: 'T' },
+    'CrO42-': { status: 'K', color: '#FFFF00', note: 'solubility_notes.yellow' },
   }
 };
